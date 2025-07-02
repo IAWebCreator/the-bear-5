@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>the bear ($TB)</title>
+    <meta name="description" content="the bear is comming. A symbol for the inevitable market cycle.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /*
+        ==========================================================================
+        *   DESIGN SYSTEM & VARIABLES
+        ==========================================================================
+        */
+        :root {
+            --brand-orange: #FF8C00;
+            --brand-black: #0C0C0C;
+            --background-light: #F5F5F5;
+            --text-color: #1A1A1A;
+            --border-color: #1A1A1A;
+
+            --font-primary: 'Inter', sans-serif;
+            --font-secondary: 'Roboto Mono', monospace;
+
+            --spacing-xs: 4px;
+            --spacing-s: 8px;
+            --spacing-m: 16px;
+            --spacing-l: 24px;
+            --spacing-xl: 32px;
+            --spacing-xxl: 64px;
+
+            --border-radius: 4px;
+            --border-width: 2px;
+            --shadow-depth: 5px;
+        }
+
+        /*
+        ==========================================================================
+        *   GLOBAL RESET & BASE STYLES
+        ==========================================================================
+        */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background-color: var(--background-light);
+            color: var(--text-color);
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /*
+        ==========================================================================
+        *   TYPOGRAPHY & UTILITIES
+        ==========================================================================
+        */
+        h1, h2, h3 {
+            font-family: var(--font-primary);
+            font-weight: 900;
+            line-height: 1.2;
+            text-transform: uppercase;
+            color: var(--brand-black);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 10vw, 5rem);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            margin-bottom: var(--spacing-l);
+        }
+
+        h3 {
+            font-size: clamp(1.25rem, 5vw, 1.75rem);
+            margin-bottom: var(--spacing-m);
+        }
+
+        p {
+            margin-bottom: var(--spacing-m);
+            max-width: 65ch;
+        }
+
+        a {
+            color: var(--brand-orange);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        a:hover, a:focus {
+            color: var(--brand-black);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: var(--spacing-xxl) 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-orange {
+            color: var(--brand-orange);
+        }
+
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /*
+        ==========================================================================
+        *   BUTTONS
+        ==========================================================================
+        */
+        .btn {
+            display: inline-block;
+            font-family: var(--font-secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: var(--spacing-m) var(--spacing-xl);
+            border: var(--border-width) solid var(--brand-black);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background-color: var(--brand-orange);
+            color: var(--brand-black);
+            box-shadow: var(--shadow-depth) var(--shadow-depth) 0 var(--brand-black);
+        }
+
+        .btn-primary:hover {
+            transform: translate(var(--shadow-depth), var(--shadow-depth));
+            box-shadow: 0 0 0 var(--brand-black);
+        }
+
+        .btn-secondary {
+            background-color: var(--background-light);
+            color: var(--brand-black);
+            box-shadow: var(--shadow-depth) var(--shadow-depth) 0 var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            transform: translate(var(--shadow-depth), var(--shadow-depth));
+            box-shadow: 0 0 0 var(--border-color);
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple-effect 0.6s linear;
+        }
+
+        @keyframes ripple-effect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /*
+        ==========================================================================
+        *   HEADER & NAVIGATION
+        ==========================================================================
+        */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(245, 245, 245, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: var(--border-width) solid var(--border-color);
+            padding: var(--spacing-m) 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-s);
+        }
+
+        .logo-img {
+            height: 40px;
+            width: 40px;
+        }
+
+        .logo-text {
+            font-family: var(--font-secondary);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--brand-black);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-l);
+        }
+
+        .nav-links a {
+            font-family: var(--font-secondary);
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--brand-black);
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--brand-orange);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 2px;
+            background: var(--brand-black);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger::before,
+        .hamburger::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 2px;
+            background: var(--brand-black);
+            left: 0;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger::before {
+            top: -8px;
+        }
+
+        .hamburger::after {
+            bottom: -8px;
+        }
+
+        /* Mobile Nav Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                width: 70%;
+                background-color: var(--background-light);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: var(--spacing-xl);
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+                border-left: var(--border-width) solid var(--brand-black);
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .mobile-nav-toggle {
+                display: block;
+            }
+
+            .mobile-nav-toggle.active .hamburger {
+                background: transparent;
+            }
+
+            .mobile-nav-toggle.active .hamburger::before {
+                transform: rotate(45deg) translate(5px, 6px);
+            }
+
+            .mobile-nav-toggle.active .hamburger::after {
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
+        }
+
+        /*
+        ==========================================================================
+        *   HERO SECTION
+        ==========================================================================
+        */
+        .hero {
+            background-color: var(--brand-black);
+            color: var(--background-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 100px; /* Header offset */
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-l);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-logo {
+            width: 150px;
+            height: 150px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .hero h1 {
+            color: var(--background-light);
+            text-align: center;
+        }
+
+        .hero .subtitle {
+            font-family: var(--font-secondary);
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            color: var(--background-light);
+            opacity: 0.8;
+            text-align: center;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--spacing-m);
+            margin-top: var(--spacing-l);
+        }
+
+        /*
+        ==========================================================================
+        *   ABOUT SECTION
+        ==========================================================================
+        */
+        #about .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /*
+        ==========================================================================
+        *   TOKENOMICS SECTION
+        ==========================================================================
+        */
+        #tokenomics {
+            background-color: var(--brand-black);
+            color: var(--background-light);
+        }
+
+        #tokenomics h2, #tokenomics h3 {
+            color: var(--background-light);
+        }
+
+        .tokenomics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+
+        .tokenomics-card {
+            background-color: var(--background-light);
+            color: var(--brand-black);
+            padding: var(--spacing-xl);
+            border: var(--border-width) solid var(--brand-black);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-depth) var(--shadow-depth) 0 var(--brand-orange);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .tokenomics-card:hover {
+            transform: translate(var(--shadow-depth), var(--shadow-depth));
+            box-shadow: 0 0 0 var(--brand-orange);
+        }
+
+        .tokenomics-card .label {
+            font-family: var(--font-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: var(--spacing-s);
+        }
+
+        .tokenomics-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            word-break: break-all;
+        }
+
+        .contract-address-container {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-s);
+            flex-wrap: wrap;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-xs);
+        }
+
+        .copy-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--brand-black);
+            transition: fill 0.2s ease;
+        }
+
+        .copy-btn:hover svg {
+            fill: var(--brand-orange);
+        }
+
+        /*
+        ==========================================================================
+        *   HOW TO BUY SECTION
+        ==========================================================================
+        */
+        .how-to-buy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+
+        .buy-step {
+            border: var(--border-width) solid var(--border-color);
+            padding: var(--spacing-l);
+            border-radius: var(--border-radius);
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: var(--spacing-l);
+            background-color: var(--background-light);
+            padding: 0 var(--spacing-s);
+            font-family: var(--font-secondary);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--brand-orange);
+        }
+
+        .buy-step-icon {
+            margin-bottom: var(--spacing-m);
+        }
+
+        .buy-step-icon svg {
+            width: 48px;
+            height: 48px;
+            stroke: var(--brand-orange);
+        }
+
+        /*
+        ==========================================================================
+        *   ROADMAP SECTION
+        ==========================================================================
+        */
+        #roadmap {
+            background-color: var(--brand-black);
+            color: var(--background-light);
+        }
+
+        #roadmap h2 {
+            color: var(--background-light);
+        }
+
+        .roadmap-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: var(--spacing-xxl) auto 0;
+        }
+
+        .roadmap-timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--brand-orange);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+
+        .roadmap-item {
+            padding: var(--spacing-m) var(--spacing-xl);
+            position: relative;
+            background-color: transparent;
+            width: 50%;
+        }
+
+        .roadmap-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--background-light);
+            border: 4px solid var(--brand-orange);
+            top: 25px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .roadmap-item.left {
+            left: 0;
+            padding-right: 40px;
+        }
+
+        .roadmap-item.right {
+            left: 50%;
+            padding-left: 40px;
+        }
+
+        .roadmap-item.left::after {
+            right: -12px;
+        }
+
+        .roadmap-item.right::after {
+            left: -12px;
+        }
+
+        .roadmap-content {
+            padding: var(--spacing-l);
+            background-color: var(--background-light);
+            position: relative;
+            border-radius: var(--border-radius);
+            border: var(--border-width) solid var(--border-color);
+        }
+
+        .roadmap-content h3 {
+            color: var(--brand-black);
+        }
+
+        .roadmap-content p {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .roadmap-timeline::after {
+                left: 20px;
+            }
+            .roadmap-item {
+                width: 100%;
+                padding-left: 50px;
+                padding-right: 0;
+            }
+            .roadmap-item.right {
+                left: 0%;
+                padding-left: 50px;
+            }
+            .roadmap-item.left::after, .roadmap-item.right::after {
+                left: 10px;
+            }
+        }
+
+        /*
+        ==========================================================================
+        *   CTA SECTION
+        ==========================================================================
+        */
+        #cta .container {
+            text-align: center;
+        }
+
+        #cta h2 {
+            max-width: 20ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /*
+        ==========================================================================
+        *   FOOTER
+        ==========================================================================
+        */
+        .main-footer {
+            background-color: var(--brand-black);
+            color: var(--background-light);
+            padding: var(--spacing-xl) 0;
+            text-align: center;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-m);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-s);
+        }
+
+        .footer-logo .logo-img {
+            height: 30px;
+            width: 30px;
+        }
+
+        .footer-logo .logo-text {
+            color: var(--background-light);
+            font-family: var(--font-secondary);
+            font-size: 1rem;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="#" class="logo-container">
+                <img src="https://yoahusjzxyasdporfmmt.supabase.co/storage/v1/object/public/token-logos/f22ebc6b-767a-4f8d-8e49-b8f10509622d.png?" alt="the bear logo" class="logo-img">
+                <span class="logo-text">$TB</span>
+            </a>
+            <nav>
+                <div class="nav-links" id="nav-links">
+                    <a href="#about">About</a>
+                    <a href="#tokenomics">Tokenomics</a>
+                    <a href="#how-to-buy">How to Buy</a>
+                    <a href="#roadmap">Roadmap</a>
+                </div>
+            </nav>
+            <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Menu">
+                <div class="hamburger"></div>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="container">
+                <img src="https://yoahusjzxyasdporfmmt.supabase.co/storage/v1/object/public/token-logos/f22ebc6b-767a-4f8d-8e49-b8f10509622d.png?" alt="the bear is comming" class="hero-logo">
+                <h1>the bear is comming</h1>
+                <p class="subtitle">A new cycle begins. Prepare for the descent.</p>
+                <div class="hero-cta-group">
+                    <a href="#how-to-buy" class="btn btn-primary">Buy $TB</a>
+                    <a href="https://etherscan.io/token/0xFf7d6A96ae471BbCD7713aF9CB1fEeB16cf56B41" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">View Contract</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section-fade-in">
+            <div class="container">
+                <h2>A Symbol for the Inevitable</h2>
+                <p>Markets move in cycles. After the euphoria, comes the correction. The Bear ($TB) is a token that acknowledges this reality. It represents the quiet strength needed to navigate a downturn, and the foresight to see opportunity when others see fear.</p>
+                <p>We are the signal in the noise, a stark reminder that winter always arrives. This is for the patient, the prepared, and the pragmatic.</p>
+            </div>
+        </section>
+
+        <!-- Tokenomics Section -->
+        <section id="tokenomics" class="section-fade-in">
+            <div class="container text-center">
+                <h2>Tokenomics</h2>
+                <p style="color: var(--background-light); opacity: 0.8; max-width: 50ch; margin: 0 auto;">Simple. Stark. Uncompromising.</p>
+                <div class="tokenomics-grid">
+                    <div class="tokenomics-card">
+                        <div class="label">Token Name</div>
+                        <div class="value">the bear</div>
+                    </div>
+                    <div class="tokenomics-card">
+                        <div class="label">Ticker</div>
+                        <div class="value">$TB</div>
+                    </div>
+                    <div class="tokenomics-card">
+                        <div class="label">Total Supply</div>
+                        <div class="value">1,000,000,000</div>
+                    </div>
+                    <div class="tokenomics-card">
+                        <div class="label">Taxes</div>
+                        <div class="value">0% Buy / 0% Sell</div>
+                    </div>
+                </div>
+                <div class="tokenomics-card" style="margin-top: var(--spacing-xl); text-align: left;">
+                    <div class="label">Contract Address</div>
+                    <div class="contract-address-container">
+                        <span class="value" id="contract-address">0xFf7d6A96ae471BbCD7713aF9CB1fEeB16cf56B41</span>
+                        <button class="copy-btn" id="copy-button" aria-label="Copy contract address">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4V2C8 1.44772 8.44772 1 9 1H19C19.5523 1 20 1.44772 20 2V15C20 15.5523 19.5523 16 19 16H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 6H15C15.5523 6 16 6.44772 16 7V21C16 21.5523 15.5523 22 15 22H5C4.44772 22 4 21.5523 4 21V7C4 6.44772 4.44772 6 5 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <span id="copy-feedback" style="font-family: var(--font-secondary); font-size: 0.9rem;"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Buy Section -->
+        <section id="how-to-buy" class="section-fade-in">
+            <div class="container text-center">
+                <h2>How to Acquire $TB</h2>
+                <div class="how-to-buy-grid">
+                    <div class="buy-step">
+                        <div class="step-number">01</div>
+                        <div class="buy-step-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4h-4z"/></svg>
+                        </div>
+                        <h3>Create a Wallet</h3>
+                        <p>Download a crypto wallet like MetaMask or Trust Wallet from the app store or browser extension store for free.</p>
+                    </div>
+                    <div class="buy-step">
+                        <div class="step-number">02</div>
+                        <div class="buy-step-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.29 3.86-1.5 4.14a2 2 0 0 0 1.53 2.73l4.14 1.5a2 2 0 0 0 2.73-1.53l1.5-4.14a2 2 0 0 0-2.73-2.73l-4.14-1.5a2 2 0 0 0-1.53 1.53z"/><path d="M7.4 15.6A2 2 0 0 0 9 17.94l4.94 1.8a2 2 0 0 0 2.52-2.52l-1.8-4.94a2 2 0 0 0-2.34-1.57l-4.94 1.8a2 2 0 0 0-1.57 2.34z"/></svg>
+                        </div>
+                        <h3>Get Some ETH</h3>
+                        <p>Have ETH in your wallet to swap for $TB. If you don't have any, you can buy directly on MetaMask, transfer from another wallet, or buy on an exchange.</p>
+                    </div>
+                    <div class="buy-step">
+                        <div class="step-number">03</div>
+                        <div class="buy-step-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m15.5 8.5-4 4-4-4"/></svg>
+                        </div>
+                        <h3>Go to Uniswap</h3>
+                        <p>Connect to Uniswap. Go to app.uniswap.org in your browser or within your wallet's browser. Connect your wallet.</p>
+                    </div>
+                    <div class="buy-step">
+                        <div class="step-number">04</div>
+                        <div class="buy-step-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                        </div>
+                        <h3>Swap for $TB</h3>
+                        <p>Paste the $TB contract address into Uniswap, select $TB, and confirm. When MetaMask prompts, sign the transaction.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roadmap Section -->
+        <section id="roadmap" class="section-fade-in">
+            <div class="container text-center">
+                <h2>The Path Ahead</h2>
+                <div class="roadmap-timeline">
+                    <div class="roadmap-item left section-fade-in">
+                        <div class="roadmap-content">
+                            <h3>Phase 1: The Warning</h3>
+                            <p>The token is launched. The signal is sent. An early community of watchers and realists forms, understanding the shift to come.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-item right section-fade-in">
+                        <div class="roadmap-content">
+                            <h3>Phase 2: The Descent</h3>
+                            <p>As the market turns, $TB becomes a recognized symbol of the downturn. We embrace the red, building a foundation while others panic.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-item left section-fade-in">
+                        <div class="roadmap-content">
+                            <h3>Phase 3: Hibernation</h3>
+                            <p>In the depths of the market winter, the project endures. This is a period of quiet strength, holding the line and preparing for what's next.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-item right section-fade-in">
+                        <div class="roadmap-content">
+                            <h3>Phase 4: The Awakening</h3>
+                            <p>As the cycle nears its end, The Bear awakens. The community, hardened by the winter, is positioned for the first signs of a new beginning.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section id="cta" class="section-fade-in">
+            <div class="container">
+                <h2>The market waits for no one.</h2>
+                <p>The choice is yours. Follow the herd, or heed the warning.</p>
+                <a href="#how-to-buy" class="btn btn-primary">Secure Your Position</a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="https://yoahusjzxyasdporfmmt.supabase.co/storage/v1/object/public/token-logos/f22ebc6b-767a-4f8d-8e49-b8f10509622d.png?" alt="the bear logo" class="logo-img">
+                <span class="logo-text">the bear ($TB)</span>
+            </div>
+            <p class="footer-text">&copy; 2024 the bear. All rights reserved. The market is unpredictable; invest wisely.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- Mobile Navigation ---
+            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+            const navLinks = document.getElementById('nav-links');
+            const navLinkItems = navLinks.querySelectorAll('a');
+
+            mobileNavToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                mobileNavToggle.classList.toggle('active');
+            });
+
+            // Close mobile nav when a link is clicked
+            navLinkItems.forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    mobileNavToggle.classList.remove('active');
+                });
+            });
+
+            // --- Button Ripple Effect ---
+            function createRipple(event) {
+                const button = event.currentTarget;
+                const circle = document.createElement("span");
+                const diameter = Math.max(button.clientWidth, button.clientHeight);
+                const radius = diameter / 2;
+
+                circle.style.width = circle.style.height = `${diameter}px`;
+                circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+                circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+                circle.classList.add("ripple");
+
+                const ripple = button.getElementsByClassName("ripple")[0];
+                if (ripple) {
+                    ripple.remove();
+                }
+                button.appendChild(circle);
+            }
+
+            const buttons = document.querySelectorAll(".btn");
+            buttons.forEach(button => {
+                button.addEventListener("click", createRipple);
+            });
+
+            // --- Copy to Clipboard ---
+            const copyButton = document.getElementById('copy-button');
+            const contractAddress = document.getElementById('contract-address').innerText;
+            const copyFeedback = document.getElementById('copy-feedback');
+
+            copyButton.addEventListener('click', () => {
+                navigator.clipboard.writeText(contractAddress).then(() => {
+                    copyFeedback.innerText = 'Copied!';
+                    setTimeout(() => {
+                        copyFeedback.innerText = '';
+                    }, 2000);
+                }).catch(err => {
+                    copyFeedback.innerText = 'Failed to copy';
+                    console.error('Could not copy text: ', err);
+                });
+            });
+
+            // --- Scroll-triggered Fade-in Animation ---
+            const sections = document.querySelectorAll('.section-fade-in');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+
+</body>
+</html>
